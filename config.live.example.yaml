@@ -1,0 +1,45 @@
+# Live readiness example.
+# Do not put real API keys or account numbers in this file.
+# Save KIS_LIVE_* secrets only through the app environment settings or a local .env.
+
+trading_mode: live
+allow_live_trading: true
+live_trading_enabled: true
+allow_paper_short: false
+
+# Runtime data prerequisites for real-mode dry-run and small live rehearsal.
+# Keep the static config itself loader-safe. The live runtime converts its data
+# side to external-scan-kis internally and uses this scanner snapshot path.
+market_data_source: local
+scanner_source: local
+scanner_snapshot_path: data/scanner_snapshot.json
+scanner_snapshot_max_age_seconds: 300
+kis_market_data_scan_limit: 10
+scan_limit_per_cycle: 0
+
+# Fixed signal policy and live safety guardrails.
+initial_cash: 1000000
+max_positions: 0
+max_position_amount: 300000
+max_daily_entries_per_symbol: 1
+max_daily_loss: 100000
+daily_loss_exit_amount: 100000
+stop_loss_pct: 0.02
+take_profit_pct: 0.03
+trailing_stop_pct: 0.015
+transaction_tax_pct: 0.002
+commission_pct: 0
+slippage_pct: 0.001
+min_net_profit_pct: 0.001
+momentum_window: 3
+volume_window: 3
+max_holding_minutes: 0
+forced_exit_time:
+kill_switch: false
+
+allow_kis_vts_trading: false
+allow_after_hours_simulation: false
+enforce_market_hours: true
+market_closed_dates: 2026-05-01,2026-12-31
+data_path: data/sample_bars.csv
+journal_path: logs/trades.csv

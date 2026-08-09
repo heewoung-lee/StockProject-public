@@ -1,0 +1,64 @@
+# 안전 기본값: 로컬 paper 모드만 실행합니다. 외부 브로커 API를 호출하지 않습니다.
+trading_mode: paper
+
+# KIS VTS 읽기 전용 smoke는 이 YAML을 읽지 않고 .env의 KIS_VTS_* 값만 읽습니다.
+# 예: python -m stockbot.kis_smoke --env-file .env --symbol 005930
+# 이 smoke 명령은 주문을 넣지 않습니다.
+#
+# 공유 예제에서는 false로 유지하세요. 별도 로컬 config에서 trading_mode: kis-vts와
+# allow_kis_vts_trading: true를 켜더라도 현재 기본 CLI 실행 루프는 paper 모드만 지원합니다.
+# KIS 주문 배치는 클라이언트 코드에서 allow_order_placement=True를 별도로 명시해야 열립니다.
+allow_kis_vts_trading: false
+initial_cash: 1000000
+max_consecutive_order_failures: 3
+
+# 자동매매는 하나의 내장 신호 정책을 사용하며 별도 현금 배분 비율을 두지 않습니다.
+# 아래 값은 투자 프로필이 아니라 주문·손실을 제한하는 backend 안전 게이트입니다.
+# max_positions: 0  # 0 means no configured position-count limit.
+# max_daily_entries_per_symbol: 1  # per-symbol same-day re-entry safety limit.
+# max_daily_loss: 100000
+# stop_loss_pct: 0.02
+# Cost-adjusted entry filter. Values are ratios, not whole percentages.
+# A new entry is allowed only when expected gross move covers:
+# transaction tax + round-trip commission + round-trip slippage + minimum net profit buffer.
+transaction_tax_pct: 0.002
+commission_pct: 0
+slippage_pct: 0.001
+min_net_profit_pct: 0.001
+momentum_window: 3
+volume_window: 3
+scan_limit_per_cycle: 0
+# Data-source modes:
+# - local: replay local CSV/history only; no broker API calls.
+# - kis-vts: read a small KIS quote watchlist directly; REST rehearsal cap applies.
+# - external-scan-kis: rank/evaluate with a provider-neutral scanner first, then use KIS only
+#   for final quote confirmation before local paper fills.
+market_data_source: local
+# Scanner source is separate from KIS quote settings. Use json when an external collector
+# such as a Kiwoom bridge writes ranked candidates/current prices to a local JSON snapshot.
+# When market_data_source is external-scan-kis, scanner_source must be json or an injected
+# adapter such as kiwoom. It must not silently fall back to local CSV scanning.
+scanner_source: local
+# Used automatically when the dashboard switches to external-scan-kis.
+scanner_snapshot_path: data/scanner_snapshot.json
+kis_market_data_symbols: 005930,000660,035420,035720,051910,068270,005380,000270,005490,012330,055550,066570,086790,105560,207940,086520,196170,247540,028300,035900
+kis_market_data_scan_limit: 10
+# 0 means positions are not sold only because time passed.
+max_holding_minutes: 0
+daily_loss_exit_amount: 100000
+# Leave blank to disable a fixed end-of-day forced exit in local paper simulation.
+forced_exit_time:
+# Shared config stays paper-safe. Live broker support exists, but real orders remain
+# fail-closed unless config.live.example.yaml, local .env KIS_LIVE_* values, current
+# session approval, market-hours, audit, risk, and reconciliation checks all pass.
+allow_live_trading: false
+live_trading_enabled: false
+allow_paper_short: true
+kill_switch: false
+# Local paper simulation can replay historical/sample data outside market hours.
+# This does not enable KIS VTS or live order placement.
+allow_after_hours_simulation: true
+enforce_market_hours: true
+market_closed_dates: 2026-05-01,2026-12-31
+data_path: data/sample_bars.csv
+journal_path: logs/trades.csv

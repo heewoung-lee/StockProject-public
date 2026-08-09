@@ -1,0 +1,26 @@
+{
+  "provider": "kiwoom-openapi",
+  "generated_at": "2026-06-19T00:00:00+00:00",
+  "candidates": [
+    {
+      "symbol": "035720",
+      "name": "카카오",
+      "price": "40800",
+      "volume": 90000,
+      "priority": 90000,
+      "reason": "volume_rank",
+      "timestamp": "2026-06-19T09:01:00+09:00",
+      "bid": "40750",
+      "ask": "40850"
+    },
+    {
+      "symbol": "000660",
+      "name": "SK하이닉스",
+      "price": "85000",
+      "volume": 20000,
+      "priority": 20000,
+      "reason": "volume_rank",
+      "timestamp": "2026-06-19T09:01:00+09:00"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stockbot"
+version = "0.1.0"
+description = "Windows stock trading app with an external scanner and KIS execution."
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+windows-service-build = [
+    "pyinstaller>=6.0",
+    "pywin32>=308; sys_platform == 'win32'",
+]
+
+[project.scripts]
+stockbot = "stockbot.cli:main"
+stockbot-kis-smoke = "stockbot.kis_smoke:main"
+stockbot-simulate = "stockbot.simulate_cli:main"
+stockbot-electron-bridge = "stockbot.electron_bridge:main"
+stockbot-scanner-snapshot = "stockbot.scanner_snapshot_cli:main"
+stockbot-live-readiness = "stockbot.live_readiness_cli:main"
+stockbot-live-probe = "stockbot.live_probe:main"
+stockbot-live-order-dry-run = "stockbot.live_order_dry_run_cli:main"
+stockbot-live-order-rehearsal = "stockbot.live_order_rehearsal_cli:main"
+stockbot-windows-service = "stockbot.windows_service:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
